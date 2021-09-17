@@ -3,7 +3,7 @@
 def call(Map param) {
     pipeline {
         agent {
-            label param.node
+            label "${param.node}"
         }
         stages {
             stage('Build') {
@@ -23,12 +23,12 @@ def call(Map param) {
             }
             stage('Build image') {
                 steps {
-                    sh 'docker build -t my-app .'
+                    sh "mv target/*.jar ${param.nama_file}"
                 }
             }
             stage('Run app') {
                 steps {
-                    sh 'docker run -p 8181:8080 my-app'
+                    sh "java -jar ${param.nama_file}"
                 }
             }
         }
